@@ -108,11 +108,31 @@ public class LockedMe {
     }
 
     public static void addNewFile() {
-
+        System.out.println("Making a new file");
+        String fileName = readFileName();
+        File file = new File(rootFolder, fileName);
+        try {
+            if (file.createNewFile()) {
+                System.out.printf("File %s created successfully\n", fileName);
+            } else {
+                System.out.printf("File %s already exists\n", fileName);
+            }
+        } catch (IOException e) {
+            System.out.println("Couldn't write to disk!, try again later");
+        }
+        System.out.println("======================================");
     }
 
     public static void deleteFile() {
-
+        System.out.println("Deleting file");
+        String fileName = readFileName();
+        File file = new File(rootFolder, fileName);
+        if (file.delete()) {
+            System.out.printf("File %s deleted successfully\n", fileName);
+        } else {
+            System.out.printf("File %s doesn't exists\n", fileName);
+        }
+        System.out.println("======================================");
     }
 
     public static void searchForFile() {
@@ -136,6 +156,18 @@ public class LockedMe {
     }
 
     public static String readFileName() {
-        return "";
+        while (true) {
+            try {
+                System.out.print("Write file name: ");
+                String fileName = reader.readLine();
+                System.out.println("======================================");
+                if (fileName.isEmpty()) {
+                    throw new Exception();
+                }
+                return fileName;
+            } catch (Exception e) {
+                System.out.println("File name is empty");
+            }
+        }
     }
 }
