@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class LockedMe {
     static BufferedReader reader;
@@ -49,7 +51,12 @@ public class LockedMe {
                 businessMenu();
                 break;
             case 3:
-                break;
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    System.err.println("Failed to close the input stream");
+                }
+                System.exit(0);
             default:
                 System.out.printf("The option you chose is %d, which is not valid\n", option);
         }
@@ -62,15 +69,42 @@ public class LockedMe {
     }
 
     public static void displayBusinessMenu() {
-
+        System.out.println("1- Add a new file");
+        System.out.println("2- Delete a file");
+        System.out.println("3- Search for a file");
+        System.out.println("4- return to menu");
     }
 
     public static boolean businessMenuHandler(int option) {
+        switch (option) {
+            case 1:
+                addNewFile();
+                return true;
+            case 2:
+                deleteFile();
+                return true;
+            case 3:
+                searchForFile();
+                return true;
+            case 4:
+                return false;
+            default:
+                System.out.printf("The option you chose is %d, which is not valid\n", option);
+        }
         return true;
     }
 
     public static void listFiles() {
-
+        File[] files = rootFolder.listFiles(File::isFile);
+        if (files == null || files.length == 0) {
+            System.out.println("No files in the directory");
+            return;
+        }
+        Arrays.sort(files, Comparator.comparing(File::getName));
+        System.out.println("Current file list:");
+        for (File file: files) {
+            System.out.println(" - " + file.getName());
+        }
     }
 
     public static void addNewFile() {
