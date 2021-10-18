@@ -136,7 +136,15 @@ public class LockedMe {
     }
 
     public static void searchForFile() {
-
+        System.out.println("Searching for file");
+        String fileName = readFileName();
+        File file = new File(rootFolder, fileName);
+        if (file.exists()) {
+            System.out.printf("File %s found\n", fileName);
+        } else {
+            System.out.printf("File %s not found\n", fileName);
+        }
+        System.out.println("======================================");
     }
 
     public static int readOption(int max) {
